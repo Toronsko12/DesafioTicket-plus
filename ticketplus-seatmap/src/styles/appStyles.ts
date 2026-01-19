@@ -1,0 +1,186 @@
+import type React from "react";
+
+export const styles: Record<string, React.CSSProperties> = {
+  page: {
+    minHeight: "100vh",
+    paddingBottom: 92,
+    background:
+      "radial-gradient(1200px 600px at 50% -10%, rgba(255,19,19,.16), transparent 60%), radial-gradient(900px 600px at 10% 20%, rgba(247,152,2,.10), transparent 55%), #f6f7f9",
+    color: "#111",
+    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial",
+  },
+  header: {
+    position: "sticky",
+    top: 0,
+    zIndex: 20,
+    background: "rgba(17,17,17,.92)",
+    backdropFilter: "blur(10px)",
+    borderBottom: "1px solid rgba(255,255,255,.10)",
+    color: "#fff",
+  },
+  headerInner: {
+    maxWidth: 1200,
+    margin: "0 auto",
+    padding: "14px 16px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+    flexWrap: "wrap",
+  },
+  brand: { fontSize: 12, letterSpacing: 0.8, textTransform: "uppercase", opacity: 0.85 },
+  h1: { margin: "4px 0 0 0", fontSize: 20, fontWeight: 900, letterSpacing: 0.2 },
+  metaRow: { display: "flex", gap: 10, alignItems: "center", marginTop: 6, opacity: 0.95 },
+  dot: { opacity: 0.55 },
+  headerPill: {
+    minWidth: 170,
+    textAlign: "right",
+    padding: "10px 12px",
+    borderRadius: 14,
+    border: "1px solid rgba(255,255,255,.16)",
+    background: "rgba(255,255,255,.06)",
+  },
+
+  alertWrap: { maxWidth: 1200, margin: "12px auto 0 auto", padding: "0 16px" },
+  alertCard: {
+    background: "#fff",
+    borderRadius: 14,
+    padding: 12,
+    boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
+    border: "1px solid #e6e8eb",
+    fontWeight: 700,
+  },
+
+  content: {
+    maxWidth: 1200,
+    margin: "0 auto",
+    padding: 16,
+    display: "grid",
+    gridTemplateColumns: "1.6fr 1fr",
+    gap: 16,
+  },
+
+  leftCol: {
+    background: "#fff",
+    borderRadius: 16,
+    padding: 16,
+    boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
+    border: "1px solid #e6e8eb",
+  },
+  rightCol: { display: "flex", flexDirection: "column", gap: 12 },
+
+  infoCard: {
+    background: "#fff",
+    borderRadius: 16,
+    padding: 16,
+    boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
+    border: "1px solid #e6e8eb",
+    position: "sticky",
+    top: 94,
+  },
+
+  cardHeaderRow: { display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 },
+  h2: { margin: 0, fontSize: 16, fontWeight: 900 },
+  h3: { margin: 0, fontSize: 15, fontWeight: 900 },
+
+  smallMuted: { fontSize: 12, color: "#6b7280", fontWeight: 600 },
+
+  sectionHeader: {
+    border: "1px solid #e6e8eb",
+    background: "#fff",
+    borderRadius: 14,
+    padding: 12,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
+  },
+  sectionName: { fontWeight: 900, fontSize: 14 },
+  sectionHint: { fontSize: 12, color: "#6b7280", fontWeight: 600, marginTop: 2 },
+  sectionPricePill: {
+    fontSize: 12,
+    fontWeight: 900,
+    padding: "8px 10px",
+    borderRadius: 999,
+    border: "1px solid #e6e8eb",
+    background: "#f6f7f9",
+    whiteSpace: "nowrap",
+  },
+
+  rowBadge: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    border: "1px solid #e6e8eb",
+    background: "#f6f7f9",
+    display: "grid",
+    placeItems: "center",
+    fontWeight: 900,
+  },
+
+  seatRowWrap: { display: "flex", gap: 8, flexWrap: "wrap" },
+  seatBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    fontSize: 12,
+    fontWeight: 900,
+    transition: "transform .06s ease",
+  },
+
+  legendRow: {
+    marginTop: 14,
+    fontSize: 12,
+    color: "#374151",
+    display: "flex",
+    gap: 14,
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+
+  list: { margin: "10px 0 0 0", padding: 0, listStyle: "none", display: "grid", gap: 8 },
+  listItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    border: "1px solid #e6e8eb",
+    background: "#f6f7f9",
+    borderRadius: 12,
+    padding: "10px 12px",
+  },
+
+  btn: {
+    borderRadius: 14,
+    padding: "10px 14px",
+    border: "1px solid #111",
+    fontWeight: 900,
+    cursor: "pointer",
+  },
+  btnPrimary: { background: "#111", color: "#fff" },
+  btnSecondary: { background: "#fff", color: "#111", border: "1px solid #e6e8eb" },
+
+  smallNote: { marginTop: 12, fontSize: 12, color: "#6b7280" },
+
+  bottomBar: {
+    position: "fixed",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "#fff",
+    borderTop: "1px solid #e6e8eb",
+    boxShadow: "0 -10px 24px rgba(0,0,0,0.10)",
+    padding: "10px 14px",
+    zIndex: 9999,
+  },
+  bottomInner: {
+    maxWidth: 1200,
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+    flexWrap: "wrap",
+  },
+  bottomLeft: { minWidth: 0 },
+  bottomRight: { display: "flex", gap: 10, alignItems: "center" },
+};
