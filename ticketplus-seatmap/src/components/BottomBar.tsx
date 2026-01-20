@@ -1,32 +1,39 @@
 import { money } from "../domain/utils";
 import { styles } from "../styles/appStyles";
 
-export function BottomBar({
+export function BottomBar({ // barra inferior con resumen y acciones
   selectedCount,
   total,
   onClear,
   onReserve,
+  visible = true,
 }: {
   selectedCount: number;
   total: number;
   onClear: () => void;
   onReserve: () => void;
+  visible?: boolean;
 }) {
   const disabled = selectedCount === 0;
 
   return (
-    <div style={styles.bottomBar}>
+    <div
+      className={`tp-bottombar ${visible ? "" : "isHidden"}`} /// clase para manejar visibilidad
+      style={styles.bottomBar}
+    >
       <div style={styles.bottomInner}>
         <div style={styles.bottomLeft}>
           <div style={{ fontWeight: 900 }}>
-            {selectedCount > 0 ? `${selectedCount} asiento(s) seleccionado(s)` : "Sin asientos seleccionados"}
+            {selectedCount > 0
+              ? `${selectedCount} asiento(s) seleccionado(s)`
+              : "Sin asientos seleccionados"}
           </div>
           <div style={{ opacity: 0.85, fontSize: 13 }}>
             Total: <b>{money(total)}</b>
           </div>
         </div>
 
-        <div style={styles.bottomRight}>
+        <div style={styles.bottomRight}> 
           <button
             onClick={onClear}
             disabled={disabled}

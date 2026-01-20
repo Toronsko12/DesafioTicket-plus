@@ -1,10 +1,10 @@
 import type { Seat, SectionId, SeatState } from "./types";
 
 export const EVENT = {
-  title: "SHOW DEMO - NOCHE ÍNTIMA",
-  venue: "Venue Demo Santiago",
+  title: "Avenged Sevenfold Live in Chile 2026",
+  venue: "",
   dateText: "Sábado 24 Ene · 21:00",
-  address: "Av. Demo 123, Santiago",
+  address: "",
 };
 
 export function buildSeats(): Seat[] {

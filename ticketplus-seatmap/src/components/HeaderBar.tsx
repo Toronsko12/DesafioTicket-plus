@@ -8,6 +8,7 @@ export function HeaderBar({
   address,
   timerLabel,
   timerValue,
+  showTimer,
 }: {
   brand: string;
   title: string;
@@ -16,6 +17,7 @@ export function HeaderBar({
   address: string;
   timerLabel: string;
   timerValue: string;
+  showTimer: boolean;
 }) {
   return (
     <div style={styles.header}>
@@ -23,20 +25,13 @@ export function HeaderBar({
         <div>
           <div style={styles.brand}>{brand}</div>
           <h1 style={styles.h1}>{title}</h1>
-          <div style={styles.metaRow}>
-            <span>{venue}</span>
-            <span style={styles.dot}>•</span>
-            <span>{dateText}</span>
-          </div>
-          <div style={styles.metaRow}>
-            <span style={{ opacity: 0.85 }}>{address}</span>
-          </div>
         </div>
-
-        <div style={styles.headerPill}>
-          <div style={{ fontSize: 12, opacity: 0.85 }}>{timerLabel}</div>
-          <div style={{ fontSize: 18, fontWeight: 900 }}>{timerValue}</div>
-        </div>
+        {showTimer && (
+          <div style={styles.headerPill}>
+            <div style={{ fontSize: 12, opacity: 0.85 }}>{timerLabel}</div>
+            <div style={{ fontSize: 18, fontWeight: 900 }}>{timerValue}</div>
+          </div>
+        )}
       </div>
     </div>
   );

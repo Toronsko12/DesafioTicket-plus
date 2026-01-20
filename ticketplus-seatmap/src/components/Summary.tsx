@@ -3,7 +3,7 @@ import { money, seatLabel } from "../domain/utils";
 import { Row } from "./ui/Row";
 import { styles } from "../styles/appStyles";
 
-export function SummaryCard({
+export function SummaryCard({ // tarjeta de resumen de selección de asientos
   selectedSeats,
   maxSeats,
   totals,
@@ -29,9 +29,9 @@ export function SummaryCard({
 
         <ul style={styles.list}>
           {selectedSeats.length === 0 ? (
-            <li style={{ color: "#6b7280" }}>No hay asientos seleccionados</li>
+            <li style={{ color: "#6b7280" }}>No hay asientos seleccionados</li> 
           ) : (
-            selectedSeats
+            selectedSeats // ordenar y mostrar asientos seleccionados
               .slice()
               .sort((a, b) =>
                 a.section !== b.section
@@ -55,7 +55,7 @@ export function SummaryCard({
           <Row label="Total" value={money(totals.total)} strong />
         </div>
 
-        <button
+        <button // botón para reservar asientos
           onClick={onReserve}
           disabled={selectedSeats.length === 0}
           style={{
@@ -70,7 +70,7 @@ export function SummaryCard({
           Reservar
         </button>
 
-        <button
+        <button // botón para limpiar selección
           onClick={onClear}
           style={{
             ...styles.btn,

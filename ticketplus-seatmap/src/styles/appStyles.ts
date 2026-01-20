@@ -4,10 +4,16 @@ export const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
     paddingBottom: 92,
-    background:
-      "radial-gradient(1200px 600px at 50% -10%, rgba(255,19,19,.16), transparent 60%), radial-gradient(900px 600px at 10% 20%, rgba(247,152,2,.10), transparent 55%), #f6f7f9",
-    color: "#111",
+    backgroundImage: "url('/Estrella.webp')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed", // opcional, efecto “parallax”
+    color: "#000000",
     fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial",
+  
+
+
   },
   header: {
     position: "sticky",
