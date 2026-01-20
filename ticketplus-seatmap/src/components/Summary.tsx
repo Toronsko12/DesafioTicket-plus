@@ -1,9 +1,17 @@
+/**
+ * SummaryCard
+ *
+ * Tarjeta de resumen de compra. Muestra en tiempo real los asientos seleccionados,
+ * el desglose de costos (subtotal + cargo por servicio) y las acciones principales
+ * (reservar / limpiar). Refleja el estado actual de selección y deshabilita la
+ * acción de reserva cuando no hay asientos seleccionados.
+ */
 import type { Seat } from "../domain/types";
 import { money, seatLabel } from "../domain/utils";
 import { Row } from "./ui/Row";
 import { styles } from "../styles/appStyles";
 
-export function SummaryCard({ // tarjeta de resumen de selección de asientos
+export function SummaryCard({
   selectedSeats,
   maxSeats,
   totals,
@@ -29,9 +37,9 @@ export function SummaryCard({ // tarjeta de resumen de selección de asientos
 
         <ul style={styles.list}>
           {selectedSeats.length === 0 ? (
-            <li style={{ color: "#6b7280" }}>No hay asientos seleccionados</li> 
+            <li style={{ color: "#6b7280" }}>No hay asientos seleccionados</li>
           ) : (
-            selectedSeats // ordenar y mostrar asientos seleccionados
+            selectedSeats
               .slice()
               .sort((a, b) =>
                 a.section !== b.section
@@ -55,7 +63,7 @@ export function SummaryCard({ // tarjeta de resumen de selección de asientos
           <Row label="Total" value={money(totals.total)} strong />
         </div>
 
-        <button // botón para reservar asientos
+        <button
           onClick={onReserve}
           disabled={selectedSeats.length === 0}
           style={{
@@ -70,7 +78,7 @@ export function SummaryCard({ // tarjeta de resumen de selección de asientos
           Reservar
         </button>
 
-        <button // botón para limpiar selección
+        <button
           onClick={onClear}
           style={{
             ...styles.btn,

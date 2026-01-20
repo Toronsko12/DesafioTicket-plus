@@ -1,3 +1,11 @@
+/**
+ * utils
+ *
+ * Utilidades puras (sin estado) usadas en distintos componentes:
+ * - Formateo de moneda (CLP) y etiquetas legibles para asientos.
+ * - Metadata de secciones (nombre + descripción).
+ * - Helpers para agrupar asientos por fila y formatear el timer.
+ */
 import type { Seat, SectionId } from "./types";
 
 export function money(n: number) {

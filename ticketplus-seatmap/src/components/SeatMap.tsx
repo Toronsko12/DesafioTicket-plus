@@ -1,3 +1,12 @@
+/**
+ * SeatMap
+ *
+ * Renderiza el mapa de asientos por sección, agrupado por filas.
+ * - Colorea los asientos disponibles según la zona (VIP/PLATEA/GENERAL).
+ * - Permite seleccionar/deseleccionar asientos disponibles.
+ * - Muestra estados no seleccionables (ocupado / no disponible).
+ * - Entrega feedback accesible mediante `aria-label` y `aria-pressed`.
+ */
 import type { Seat, SectionId } from "../domain/types";
 import { groupByRow, money, sectionMeta } from "../domain/utils";
 import { styles } from "../styles/appStyles";
@@ -42,7 +51,7 @@ export function SeatMap({
         const price = seatsSec[0]?.price ?? 0;
         const zone = sectionColor(sec);
 
-        return ( // sección de asientos
+        return (
           <div key={sec} style={{ marginTop: 14 }}>
             <div style={styles.sectionHeader}>
               <div>
@@ -53,7 +62,7 @@ export function SeatMap({
               <div style={styles.sectionPricePill}>{money(price)} c/u</div>
             </div>
 
-            <div  // leyenda de asientos
+            <div
               style={{
                 display: "flex",
                 gap: 14,
@@ -85,10 +94,10 @@ export function SeatMap({
                       const disabled = seat.state === "OCCUPIED" || seat.state === "UNAVAILABLE";
 
                       const background = disabled
-                        ? "#E5E7EB" // no disponible/ocupado
+                        ? "#E5E7EB"
                         : isSelected
-                        ? "#16A34A" // seleccionado
-                        : zone; // color de zona
+                        ? "#16A34A"
+                        : zone;
 
                       const textColor = disabled ? "#9CA3AF" : "#ffffff";
 

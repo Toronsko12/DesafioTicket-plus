@@ -1,4 +1,11 @@
-// src/components/VenueOverview.tsx
+/**
+ * VenueOverview
+ *
+ * Vista inicial del venue (overview) para la selección de zona.
+ * Renderiza un “escenario” de referencia y 3 zonas clickeables (VIP/PLATEA/GENERAL)
+ * que actúan como primer paso del flujo: al seleccionar una zona se navega al mapa
+ * de asientos filtrado por esa sección.
+ */
 import { useMemo } from "react";
 
 export type SectionId = "VIP" | "PLATEA" | "GENERAL";
@@ -32,7 +39,6 @@ export function VenueOverview({
         <h2 style={styles.h2}>Selecciona una ubicación</h2>
       </div>
 
-      {/* ESCENARIO */}
       <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
         <div
           style={{
@@ -51,26 +57,25 @@ export function VenueOverview({
         </div>
       </div>
 
-      {/* ZONAS (2 chicas + 1 mediana) */}
       <div style={{ display: "grid", gap: 16, marginTop: 18 }}>
         <ZoneBox
           width="62%"
           title="VIP"
-          accent={{ bg: "#00de43", border: "#00de43", pill: "#00de43" }} // verde
+          accent={{ bg: "#00de43", border: "#00de43", pill: "#00de43" }}
           onClick={() => onSelectSection("VIP")}
         />
 
         <ZoneBox
           width="68%"
           title="PLATEA"
-          accent={{ bg: "#2c00f0", border: "#2c00f0", pill: "#2c00f0" }} // morado medio gris
+          accent={{ bg: "#2c00f0", border: "#2c00f0", pill: "#2c00f0" }}
           onClick={() => onSelectSection("PLATEA")}
         />
 
         <ZoneBox
           width="86%"
           title="GENERAL"
-          accent={{ bg: "#f3b600", border: "#f3b600", pill: "#f3b600" }} // amarillo
+          accent={{ bg: "#f3b600", border: "#f3b600", pill: "#f3b600" }}
           onClick={() => onSelectSection("GENERAL")}
         />
       </div>

@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Seat, SectionId } from "./domain/types";
 import { buildSeats, EVENT } from "./domain/seatData";
 import { formatMs } from "./domain/utils";
 import { styles } from "./styles/appStyles";
+
 import { VenueOverview } from "./components/VenueOverview";
 import { HeaderBar } from "./components/HeaderBar";
 import { AlertBar } from "./components/AlertBar";
@@ -11,42 +12,73 @@ import { SummaryCard } from "./components/Summary";
 import { BottomBar } from "./components/BottomBar";
 import { Evento } from "./components/Evento";
 
-
-const MAX_SEATS = 6; // máximo de asientos seleccionables por usuario
+/**
+ * Configuración general
+ * - MAX_SEATS: máximo de asientos seleccionables por compra
+ * - HOLD_MS: tiempo máximo de retención de la selección (10 min)
+ */
+const MAX_SEATS = 6;
 const HOLD_MS = 10 * 60 * 1000;
 
-
 export default function App() {
+  /**
+   * Estado principal de asientos:
+   * - Se inicializa desde localStorage si existe, si no se generan asientos demo.
+   */
   const [seats, setSeats] = useState<Seat[]>(() => {
-    const raw = localStorage.getItem("tp_seats"); // cargar asientos desde localStorage
+    const raw = localStorage.getItem("tp_seats");
     return raw ? (JSON.parse(raw) as Seat[]) : buildSeats();
   });
 
+  /**
+   * Estado de selección:
+   * - selectedIds guarda IDs (Set) para togglear rápido y sin duplicados.
+   */
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => {
     const raw = localStorage.getItem("tp_selected");
-    return raw ? new Set<string>(JSON.parse(raw) as string[]) : new Set<string>();  // conjunto de IDs de asientos seleccionados
+    return raw ? new Set<string>(JSON.parse(raw) as string[]) : new Set<string>();
   });
 
+  /**
+   * Timer:
+   * - timerStartedAt solo se setea cuando el usuario selecciona el primer asiento.
+   * - Se persiste para sobrevivir refresh.
+   */
   const [timerStartedAt, setTimerStartedAt] = useState<number | null>(() => {
-    const raw = localStorage.getItem("tp_timer_started"); // cargar tiempo de inicio del temporizador desde localStorage
+    const raw = localStorage.getItem("tp_timer_started");
     return raw ? Number(raw) : null;
   });
 
+  /**
+   * UI state:
+   * - now: “tick” del timer (1s)
+   * - message: mensajes de alerta (confirmaciones / errores)
+   * - activeSection: controla si estamos viendo el overview o el mapa de una zona
+   */
   const [now, setNow] = useState<number>(() => Date.now());
-  const [message, setMessage] = useState<string | null>(null); // mensaje de alerta para el usuario
+  const [message, setMessage] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<SectionId | null>(null);
 
+  /**
+   * Tick del reloj (solo para renderizar remainingMs en pantalla).
+   */
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
 
+  /**
+   * Persistencia de estado en localStorage:
+   * - asientos (incluye ocupados)
+   * - selección
+   * - inicio de temporizador (o se elimina si no hay)
+   */
   useEffect(() => {
     localStorage.setItem("tp_seats", JSON.stringify(seats));
   }, [seats]);
 
   useEffect(() => {
-    localStorage.setItem("tp_selected", JSON.stringify(Array.from(selectedIds))); // guardar selección de asientos en localStorage
+    localStorage.setItem("tp_selected", JSON.stringify(Array.from(selectedIds)));
   }, [selectedIds]);
 
   useEffect(() => {
@@ -54,13 +86,21 @@ export default function App() {
     else localStorage.setItem("tp_timer_started", String(timerStartedAt));
   }, [timerStartedAt]);
 
+  /**
+   * Derivados:
+   * - selectedSeats: transforma selectedIds en objetos Seat
+   * - totals: subtotal + fee + total
+   * - remainingMs: tiempo restante para reservar
+   */
   const selectedSeats = useMemo(() => {
     const map = new Map(seats.map((s) => [s.id, s]));
-    return Array.from(selectedIds).map((id) => map.get(id)).filter(Boolean) as Seat[]; // asientos actualmente seleccionados
+    return Array.from(selectedIds)
+      .map((id) => map.get(id))
+      .filter(Boolean) as Seat[];
   }, [selectedIds, seats]);
 
   const totals = useMemo(() => {
-    const subtotal = selectedSeats.reduce((a, s) => a + s.price, 0); // suma de precios de los asientos seleccionados
+    const subtotal = selectedSeats.reduce((a, s) => a + s.price, 0);
     const fee = Math.round(subtotal * 0.1);
     return { subtotal, fee, total: subtotal + fee };
   }, [selectedSeats]);
@@ -70,22 +110,33 @@ export default function App() {
     return Math.max(0, HOLD_MS - (now - timerStartedAt));
   }, [now, timerStartedAt]);
 
-  useEffect(() => { // liberar asientos si el temporizador llega a cero
+  /**
+   * Expiración del timer:
+   * - si se acabó el tiempo y hay selección, se libera automáticamente
+   */
+  useEffect(() => {
     if (timerStartedAt !== null && remainingMs === 0 && selectedIds.size > 0) {
       setSelectedIds(new Set());
-      setTimerStartedAt(null);  
+      setTimerStartedAt(null);
       setMessage("Se acabó el tiempo. Tu selección fue liberada.");
     }
   }, [remainingMs, timerStartedAt, selectedIds.size]);
 
-  const toggleSeat = (seatId: string) => { // función para seleccionar o deseleccionar un asiento
+  /**
+   * Toggle de asiento:
+   * - no permite seleccionar OCCUPIED/UNAVAILABLE
+   * - limita a MAX_SEATS
+   * - inicia timer al primer asiento
+   * - si la selección queda vacía, reinicia timer
+   */
+  const toggleSeat = (seatId: string) => {
     setMessage(null);
 
     const seat = seats.find((s) => s.id === seatId);
     if (!seat) return;
     if (seat.state === "OCCUPIED" || seat.state === "UNAVAILABLE") return;
 
-    setSelectedIds((prev) => { // actualizar el conjunto de asientos seleccionados
+    setSelectedIds((prev) => {
       const next = new Set(prev);
 
       if (next.has(seatId)) {
@@ -104,7 +155,14 @@ export default function App() {
     });
   };
 
-  const reserve = async () => { // función para reservar los asientos seleccionados
+  /**
+   * Reservar (simulación):
+   * - espera 600ms
+   * - marca seleccionados como OCCUPIED
+   * - limpia selección y timer
+   * - muestra código de reserva
+   */
+  const reserve = async () => {
     setMessage(null);
     if (selectedSeats.length === 0) return;
 
@@ -117,49 +175,53 @@ export default function App() {
     setSelectedIds(new Set());
     setTimerStartedAt(null);
 
-    const code = `R-${Math.random().toString(16).slice(2, 8).toUpperCase()}`; // generar código de reserva aleatorio
+    const code = `R-${Math.random().toString(16).slice(2, 8).toUpperCase()}`;
     setMessage(`✅ Reserva confirmada. Código: ${code}`);
   };
 
-  const clear = () => { // función para limpiar la selección de asientos
+  /**
+   * Limpiar selección manualmente
+   */
+  const clear = () => {
     setSelectedIds(new Set());
     setTimerStartedAt(null);
     setMessage(null);
   };
 
-const [bottomVisible, setBottomVisible] = useState(true);
+  /**
+   * Visibilidad de BottomBar:
+   * - visible solo si el usuario está arriba (scrollY bajo)
+   */
+  const [bottomVisible, setBottomVisible] = useState(true);
 
-useEffect(() => {
-  const TOP_SHOW_PX = 8; // ajusta: 0 = solo exacto arriba, 8/12 = un poquito de margen
+  useEffect(() => {
+    const TOP_SHOW_PX = 8;
 
-  const onScroll = () => {
-    const y = window.scrollY;
-    setBottomVisible(y <= TOP_SHOW_PX);
-  };
+    const onScroll = () => {
+      setBottomVisible(window.scrollY <= TOP_SHOW_PX);
+    };
 
-  onScroll(); // set inicial
-  window.addEventListener("scroll", onScroll, { passive: true });
-  return () => window.removeEventListener("scroll", onScroll);
-}, []);
-
-
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const sections: SectionId[] = ["VIP", "PLATEA", "GENERAL"];
 
   return (
     <div style={styles.page}>
-        <HeaderBar
-          brand="ticketplus"
-          title={EVENT.title}
-          venue={EVENT.venue}
-          dateText={EVENT.dateText}
-          address={EVENT.address}
-          timerLabel="Tiempo para reservar"
-          timerValue={timerStartedAt !== null ? formatMs(remainingMs) : ""}
-          showTimer={timerStartedAt !== null}
-        />
+      <HeaderBar
+        brand="ticketplus"
+        title={EVENT.title}
+        venue={EVENT.venue}
+        dateText={EVENT.dateText}
+        address={EVENT.address}
+        timerLabel="Tiempo para reservar"
+        timerValue={timerStartedAt !== null ? formatMs(remainingMs) : ""}
+        showTimer={timerStartedAt !== null}
+      />
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: 16 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: 16 }}>
         <Evento
           imageUrl="/Avenged.jpg"
           title="Avenged Sevenfold Live in Chile 2026"
@@ -168,8 +230,8 @@ useEffect(() => {
 
         <AlertBar message={message} />
 
-          <div
-            className="tp_grid2"
+        <div
+          className="tp_grid2"
           style={{
             marginTop: 16,
             display: "grid",
@@ -178,6 +240,7 @@ useEffect(() => {
             alignItems: "start",
           }}
         >
+          {/* Card izquierda: mapa real + datos */}
           <div style={styles.leftCol}>
             <h3 style={styles.h3}>Estadio Bicentenario de La Florida</h3>
 
@@ -199,45 +262,45 @@ useEffect(() => {
             </div>
           </div>
 
-      <div style={styles.leftCol}>
-        {!activeSection ? (
-          <VenueOverview
-            sections={sections}
-            seats={seats}
-            onSelectSection={(sec) => setActiveSection(sec)}
-            styles={styles}
-          />
-        ) : (
-          <>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 12,
-              }}
-            >
-              <h2 style={styles.h2}>Asientos — {activeSection}</h2>
+          {/* Card derecha: overview/seatmap + summary */}
+          <div style={styles.leftCol}>
+            {!activeSection ? (
+              <VenueOverview
+                sections={sections}
+                seats={seats}
+                onSelectSection={(sec) => setActiveSection(sec)}
+                styles={styles}
+              />
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 10,
+                    marginBottom: 12,
+                  }}
+                >
+                  <h2 style={styles.h2}>Asientos — {activeSection}</h2>
 
-              <button
-                onClick={() => setActiveSection(null)}
-                style={{ ...styles.btn, ...styles.btnSecondary }}
-              >
-                Volver al mapa
-              </button>
-            </div>
+                  <button
+                    onClick={() => setActiveSection(null)}
+                    style={{ ...styles.btn, ...styles.btnSecondary }}
+                  >
+                    Volver al mapa
+                  </button>
+                </div>
 
-            <SeatMap
-              seats={seats.filter((s) => s.section === activeSection)}
-              selectedIds={selectedIds}
-              sections={[activeSection]}
-              maxSeats={MAX_SEATS}
-              onToggleSeat={toggleSeat}
-            />
-          </>
-        )}
-
+                <SeatMap
+                  seats={seats.filter((s) => s.section === activeSection)}
+                  selectedIds={selectedIds}
+                  sections={[activeSection]}
+                  maxSeats={MAX_SEATS}
+                  onToggleSeat={toggleSeat}
+                />
+              </>
+            )}
 
             <SummaryCard
               selectedSeats={selectedSeats}
@@ -250,16 +313,14 @@ useEffect(() => {
         </div>
       </div>
 
+      <BottomBar
+        selectedCount={selectedSeats.length}
+        total={totals.total}
+        onClear={clear}
+        onReserve={reserve}
+        visible={bottomVisible}
+      />
 
-    <BottomBar
-      selectedCount={selectedSeats.length}
-      total={totals.total}
-      onClear={clear}
-      onReserve={reserve}
-      visible={bottomVisible}
-    />
-
-    
       <style>{`
         @media (max-width: 900px){
           .tp_grid2 { grid-template-columns: 1fr !important; }

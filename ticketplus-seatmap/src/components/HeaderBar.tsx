@@ -1,3 +1,11 @@
+/**
+ * HeaderBar
+ *
+ * Barra superior fija (sticky) que muestra el contexto del evento y,
+ * cuando corresponde, el temporizador de retención (hold) de la selección.
+ * `showTimer` controla que el contador no se muestre hasta que el usuario
+ * seleccione al menos un asiento.
+ */
 import { styles } from "../styles/appStyles";
 
 export function HeaderBar({

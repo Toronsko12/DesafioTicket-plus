@@ -1,3 +1,12 @@
+/**
+ * seatData
+ *
+ * Fuente de datos “mock” para el desafío:
+ * - `EVENT`: metadatos del evento que se muestran en la UI (header/hero).
+ * - `buildSeats()`: genera un layout de asientos por sección/fila/columna,
+ *   asignando estados iniciales de forma aleatoria (AVAILABLE / OCCUPIED / UNAVAILABLE)
+ *   para simular disponibilidad real sin depender de una API.
+ */
 import type { Seat, SectionId, SeatState } from "./types";
 
 export const EVENT = {
