@@ -70,10 +70,10 @@ Se realizo un mock-up de frontend donde se permite visualizar un evento, selecci
   - `useMemo`
 
 ## Supuestos 
--El desarrollo no cuenta con backend, se simulan las llamadas de API para el manejo de asientos disponibles.
--Se realiza en base a una venue imaginaria, si bien se muestra el estadio Bicentenario de La Florida, no cuenta con sus áreas reales.
--Se realiza un supuesto acerca de los precios por sección.
--La inspiración de la página fue del evento de Stefan Kramer encontrado en la página de ticketplus.
+  -El desarrollo no cuenta con backend, se simulan las llamadas de API para el manejo de asientos disponibles.
+  -Se realiza en base a una venue imaginaria, si bien se muestra el estadio Bicentenario de La Florida, no cuenta con sus áreas reales.
+  -Se realiza un supuesto acerca de los precios por sección.
+  -La inspiración de la página fue del evento de Stefan Kramer encontrado en la página de ticketplus.
 
 ## Arquitectura y Organización
 
