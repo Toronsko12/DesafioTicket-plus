@@ -1,7 +1,7 @@
 /**
  * Evento
  *
- * Componente visual principal (hero) del evento.
+ * Componente visual principal del evento.
  * Muestra la imagen destacada, título y subtítulo del evento,
  * actuando como cabecera contextual de la experiencia de compra.
  * Está pensado para ser reutilizable y completamente declarativo.

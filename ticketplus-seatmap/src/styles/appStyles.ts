@@ -1,10 +1,11 @@
 import type React from "react";
+import Estrella from "../assets/Estrella.webp";
 
 export const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
     paddingBottom: 92,
-    backgroundImage: "url('/Estrella.webp')",
+    backgroundImage: `url('${Estrella}')`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",

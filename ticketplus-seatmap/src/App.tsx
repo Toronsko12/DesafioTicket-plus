@@ -3,6 +3,7 @@ import type { Seat, SectionId } from "./domain/types";
 import { buildSeats, EVENT } from "./domain/seatData";
 import { formatMs } from "./domain/utils";
 import { styles } from "./styles/appStyles";
+import Avenged from "./assets/Avenged.jpg";
 
 import { VenueOverview } from "./components/VenueOverview";
 import { HeaderBar } from "./components/HeaderBar";
@@ -223,7 +224,7 @@ export default function App() {
 
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: 16 }}>
         <Evento
-          imageUrl="/Avenged.jpg"
+          imageUrl={Avenged}
           title="Avenged Sevenfold Live in Chile 2026"
           subtitle="24 de enero · Estadio Bicentenario de La Florida, Santiago"
         />
