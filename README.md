@@ -4,6 +4,11 @@
 Este proyecto implementa el flujo completo de seleccion y reserva de asientos para un evento, simulando el comportamiento de una ticketera real.
 Se realizo un mock-up de frontend donde se permite visualizar un evento, seleccionar una zona del venue ficticio, elegir asientos disponibles, ver un resumen en tiempo real y completar una reserva con control de tiempo.
 
+## Deploy
+- El deploy se realizo utilizando GH-pages junto a GH-actions.
+- https://toronsko12.github.io/DesafioTicket-plus/
+
+
 ## Funcionalidades implementades
 
 ### 1. Vista del Evento
