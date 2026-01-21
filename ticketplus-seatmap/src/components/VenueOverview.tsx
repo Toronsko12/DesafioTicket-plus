@@ -6,7 +6,6 @@
  * que actúan como primer paso del flujo: al seleccionar una zona se navega al mapa
  * de asientos filtrado por esa sección.
  */
-import { useMemo } from "react";
 
 export type SectionId = "VIP" | "PLATEA" | "GENERAL";
 export type SeatState = "AVAILABLE" | "SELECTED" | "OCCUPIED" | "UNAVAILABLE";
@@ -23,8 +22,6 @@ export type Seat = {
 type Styles = Record<string, React.CSSProperties>;
 
 export function VenueOverview({
-  sections,
-  seats,
   onSelectSection,
   styles,
 }: {

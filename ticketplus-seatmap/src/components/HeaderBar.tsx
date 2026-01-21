@@ -11,9 +11,6 @@ import { styles } from "../styles/appStyles";
 export function HeaderBar({
   brand,
   title,
-  venue,
-  dateText,
-  address,
   timerLabel,
   timerValue,
   showTimer,
