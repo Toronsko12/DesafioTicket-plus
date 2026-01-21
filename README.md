@@ -1,4 +1,4 @@
-# Prueba Tecnica Ticketplus
+# Prueba Técnica Ticketplus
 
 
 Este proyecto implementa el flujo completo de seleccion y reserva de asientos para un evento, simulando el comportamiento de una ticketera real.
@@ -21,7 +21,6 @@ Se realizo un mock-up de frontend donde se permite visualizar un evento, selecci
   - **General**
 - Cada zona es clickeable y conduce al mapa de asientos correspondiente.
 - Colores diferenciados por zona para mejor UX.
-- 
 ### 3. Mapa de Asientos
 - Visualización de asientos por:
   - Sección
@@ -59,7 +58,7 @@ Se realizo un mock-up de frontend donde se permite visualizar un evento, selecci
   - Total a pagar
   - Acciones rápidas
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 - **React**
 - **TypeScript**
@@ -70,7 +69,7 @@ Se realizo un mock-up de frontend donde se permite visualizar un evento, selecci
   - `useEffect`
   - `useMemo`
 
-## 🧱 Arquitectura y Organización
+## Arquitectura y Organización
 
 ```text
 src/
